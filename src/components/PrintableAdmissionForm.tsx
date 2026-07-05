@@ -1,4 +1,5 @@
 import React from 'react';
+import { logoBase64 } from './logoData';
 import { Application } from '../context/AppContext';
 
 interface PrintableAdmissionFormProps {
@@ -11,7 +12,7 @@ export default function PrintableAdmissionForm({ formData }: PrintableAdmissionF
       {/* Header Section */}
       <div className="flex flex-col items-center text-center border-b-2 border-red-600 pb-6 mb-6">
         <img 
-          src="https://i.ibb.co/TB4PbDRN/294463932-545722830683545-9019441332151319432-n.jpg" 
+          src={logoBase64} 
           alt="DITEM Logo" 
           className="h-24 w-auto mb-4"
           referrerPolicy="no-referrer"

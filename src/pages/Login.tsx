@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Lock, Mail, Eye, EyeOff } from 'lucide-react';
+import { useAppContext } from '../context/AppContext';
 
 export default function Login() {
+  const { loginUser } = useAppContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -14,10 +16,12 @@ export default function Login() {
     setError('');
     
     // Admin authentication simulation
-    const isValidEmail = email.trim().toLowerCase() === 'abdullahibichishuaib.abs@gmail.com';
+    const normalizedEmail = email.trim().toLowerCase();
+    const isValidEmail = normalizedEmail === 'abdullahibichishuaib.abs@gmail.com';
     const isValidPassword = password === 'bichi12';
 
     if (isValidEmail && isValidPassword) {
+      loginUser(normalizedEmail, 'Super Administrator');
       navigate('/admin');
     } else {
       setError('Invalid admin credentials. Please try again.');

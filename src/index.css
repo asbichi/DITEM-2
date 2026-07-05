@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500;700&family=Cinzel:wght@500;600;700;800&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,500&family=Alex+Brush&family=Great+Vibes&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -27,4 +27,26 @@
 
 .gradient-text {
   @apply bg-clip-text text-transparent bg-gradient-to-r from-slate-900 to-slate-600;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  #printable-stage-box, #printable-stage-box * {
+    visibility: visible;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  #printable-stage-box {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 0;
+    padding: 0;
+    box-shadow: none !important;
+  }
+  @page {
+    margin: 0;
+  }
 }
