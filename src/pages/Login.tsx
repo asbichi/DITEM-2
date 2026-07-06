@@ -130,9 +130,7 @@ export default function Login() {
             </button>
           </div>
           
-          <p className="text-xs text-center text-gray-500 mt-4">
-            Hint: Use email <span className="font-semibold">abdullahibichishuaib.ABS@gmail.com</span> and password <span className="font-semibold">bichi12</span> to access the dashboard.
-          </p>
+
         </form>
       </div>
     </div>
