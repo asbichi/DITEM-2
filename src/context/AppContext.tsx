@@ -98,6 +98,17 @@ export interface DBCertificate {
   status: 'Issued' | 'Pending' | 'Revoked';
 }
 
+export interface DBStaff {
+  id: string;
+  name: string;
+  role: string;
+  email: string;
+  phone: string;
+  bio: string;
+  image: string;
+  isChairman?: boolean;
+}
+
 export interface DBAuditLog {
   id: string;
   userId: string;
@@ -173,6 +184,7 @@ interface AppContextType {
   dbExaminationScores: DBExaminationScore[];
   dbTranscripts: DBTranscript[];
   dbCertificates: DBCertificate[];
+  dbStaff: DBStaff[];
   dbAuditLogs: DBAuditLog[];
   gradingRules: GradingRule[];
   
@@ -200,6 +212,10 @@ interface AppContextType {
   addCertificateDB: (studentId: string, issuedBy: string) => DBCertificate;
   updateCertificateStatusDB: (id: string, status: DBCertificate['status']) => void;
   
+  addStaff: (staff: Omit<DBStaff, 'id'>) => void;
+  updateStaff: (id: string, staff: Partial<DBStaff>) => void;
+  deleteStaff: (id: string) => void;
+
   addDepartmentDB: (dept: Omit<DBDepartment, 'id'>) => void;
   addProgrammeDB: (prog: Omit<DBProgramme, 'id'>) => void;
   addSessionDB: (sess: Omit<DBSession, 'id'>) => void;
@@ -403,6 +419,104 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     ];
   });
 
+  const [dbStaff, setDbStaff] = useState<DBStaff[]>(() => {
+    const defaultStaff: DBStaff[] = [
+      {
+        id: 'chairman_1',
+        name: 'Alhaji Dr Mahdi Shehu',
+        role: 'Chairman / Founder, Dialogue Group',
+        email: 'chairman@dialoguegroup.org',
+        phone: '+234 803 123 4567',
+        bio: 'Our vision has always been to bridge the gap between education and practical relevance. At DITEM Kaduna, we don\'t just teach technology; we empower students with the digital keys to open any door of success in the 21st century.',
+        image: 'https://i.ibb.co/TB0tYsRx/107006749-2648812945398748-5517445151314997652-n-1.jpg',
+        isChairman: true,
+      },
+      {
+        id: 'staff_8',
+        name: "Dr Jamilu Abdulhameed",
+        role: "Registrar",
+        email: "j.abdulhameed@ditem.edu.ng",
+        phone: "+234 800 000 0000",
+        bio: "Dedicated Registrar managing academic operations, student admissions, and ensuring seamless administrative processes.",
+        image: "https://i.ibb.co/PGc2Fz56/6e86b381-bc3b-4e9d-9983-93e054478ebb.jpg",
+      },
+      {
+        id: 'staff_4',
+        name: "Abdullahi Shuaibu Bichi",
+        role: "Head of Exams & Records / Instructor (Python/Data Science/Data Analysis/AI & Machine Learning/Deep Learning)",
+        email: "a.shuaibu@ditem.edu.ng",
+        phone: "+234 802 555 6666",
+        bio: "Oversees student assessments, database grading logs, official academic record-keeping, and examination scheduling. Instructs students in Python, Data Science, AI, and Machine Learning.",
+        image: "https://i.ibb.co/C3pxh2x5/f4863bef-7867-4391-9240-293a0d3d464c.jpg",
+      },
+      {
+        id: 'staff_5',
+        name: "Abdulaziz Musa",
+        role: "Instructor (Web Design, HTML, CSS, JavaScript, WordPress)",
+        email: "a.musa@ditem.edu.ng",
+        phone: "+234 800 000 0000",
+        bio: "Passionate about teaching modern web development practices. Empowers students with practical skills in Web Design, HTML, CSS, JavaScript, and WordPress.",
+        image: "https://i.ibb.co/mV24pjMz/e7e5d0f0-2cac-4f15-97ed-c33dd6d90f91.jpg",
+      },
+      {
+        id: 'staff_6',
+        name: "Muhammad Abdullahi",
+        role: "Instructor (Digital Marketing/Web Analytics/UI-UX)",
+        email: "m.abdullahi@ditem.edu.ng",
+        phone: "+234 800 000 0000",
+        bio: "Expert in Digital Marketing, Web Analytics, and UI/UX design. Dedicated to equipping students with the skills needed to create engaging and data-driven digital experiences.",
+        image: "https://i.ibb.co/RGKZVCrG/3d62b46b-a44d-46c1-8875-7ccc8b9a77d3.jpg",
+      },
+      {
+        id: 'staff_7',
+        name: "Umar Sandah Aliyu",
+        role: "Instructor (Cisco Academy/Huawei Academy)",
+        email: "u.aliyu@ditem.edu.ng",
+        phone: "+234 800 000 0000",
+        bio: "Specializes in networking technologies. Certified instructor for Cisco Academy and Huawei Academy, preparing students for industry-recognized certifications.",
+        image: "https://i.ibb.co/mFVFtvmd/8e38f0ed-3295-4c59-9aad-6d99ec9aa0d1.jpg",
+      },
+    ];
+
+    const saved = localStorage.getItem('ditem_staff');
+    if (saved) {
+      let parsedStaff: DBStaff[] = JSON.parse(saved);
+      
+      // Filter out AI generated staff
+      parsedStaff = parsedStaff.filter(s => !['staff_1', 'staff_2', 'staff_3'].includes(s.id));
+      
+      // Force update staff_4 with the new details
+      parsedStaff = parsedStaff.map(s => {
+        if (s.id === 'staff_4') {
+          const updated = defaultStaff.find(d => d.id === 'staff_4');
+          return updated ? { ...s, ...updated } : s;
+        }
+        return s;
+      });
+
+      // Merge default staff that are missing by id
+      const mergedStaff = [...parsedStaff];
+      defaultStaff.forEach(ds => {
+        if (!mergedStaff.find(s => s.id === ds.id)) {
+          mergedStaff.push(ds);
+        }
+      });
+
+      // Sort mergedStaff to match defaultStaff order
+      mergedStaff.sort((a, b) => {
+        const indexA = defaultStaff.findIndex(ds => ds.id === a.id);
+        const indexB = defaultStaff.findIndex(ds => ds.id === b.id);
+        if (indexA === -1 && indexB === -1) return 0;
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+      });
+
+      return mergedStaff;
+    }
+    return defaultStaff;
+  });
+
   const [dbAuditLogs, setDbAuditLogs] = useState<DBAuditLog[]>(() => {
     const saved = localStorage.getItem('ditem_audit_logs');
     if (saved) return JSON.parse(saved);
@@ -450,6 +564,9 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   useEffect(() => {
     localStorage.setItem('ditem_certificates', JSON.stringify(dbCertificates));
   }, [dbCertificates]);
+  useEffect(() => {
+    localStorage.setItem('ditem_staff', JSON.stringify(dbStaff));
+  }, [dbStaff]);
   useEffect(() => {
     localStorage.setItem('ditem_audit_logs', JSON.stringify(dbAuditLogs));
   }, [dbAuditLogs]);
@@ -854,6 +971,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     logActivity(currentUser?.id || 'system', 'Certificate Status Changed', `Modified status of Certificate ID ${id} to: ${status}`);
   };
 
+  const addStaff = (staff: Omit<DBStaff, 'id'>) => {
+    setDbStaff(prev => [...prev, { ...staff, id: 'staff_' + Date.now() }]);
+    logActivity(currentUser?.id || 'system', 'Staff Added', `Added new staff member: ${staff.name}`);
+  };
+
+  const updateStaff = (id: string, staff: Partial<DBStaff>) => {
+    setDbStaff(prev => prev.map(s => s.id === id ? { ...s, ...staff } : s));
+    logActivity(currentUser?.id || 'system', 'Staff Updated', `Updated staff member ID: ${id}`);
+  };
+
+  const deleteStaff = (id: string) => {
+    setDbStaff(prev => prev.filter(s => s.id !== id));
+    logActivity(currentUser?.id || 'system', 'Staff Deleted', `Deleted staff member ID: ${id}`);
+  };
+
   const addDepartmentDB = (dept: Omit<DBDepartment, 'id'>) => {
     setDbDepartments(prev => [...prev, { ...dept, id: 'd_' + Date.now() }]);
     logActivity(currentUser?.id || 'system', 'Department Added', `Created new department: ${dept.name}`);
@@ -1072,12 +1204,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   return (
     <AppContext.Provider value={{ 
       dbUsers, dbDepartments, dbProgrammes, dbSessions, dbSemesters, dbStudents, dbCourses,
-      dbExaminationScores, dbTranscripts, dbCertificates, dbAuditLogs, gradingRules,
+      dbExaminationScores, dbTranscripts, dbCertificates, dbStaff, dbAuditLogs, gradingRules,
       currentUser, loginUser, logoutUser, enable2FA,
       addStudentDB, updateStudentDB, deleteStudentDB,
       addCourseDB, updateCourseDB, deleteCourseDB,
       addExamScoreDB, addExamScoresBulkDB, deleteExamScoreDB,
       addTranscriptDB, autoPopulateDemoScores, addCertificateDB, updateCertificateStatusDB,
+      addStaff, updateStaff, deleteStaff,
       addDepartmentDB, addProgrammeDB, addSessionDB,
       updateGradingRules, logActivity, backupDatabase, restoreDatabase,
       getStudentCalculatedGPA,

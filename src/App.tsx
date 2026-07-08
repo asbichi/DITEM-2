@@ -9,6 +9,7 @@ import Login from './pages/Login';
 import Admin from './pages/Admin';
 import Exit from './pages/Exit';
 import Admission from './pages/Admission';
+import Staff from './pages/Staff';
 import FloatingWhatsApp from './components/FloatingWhatsApp';
 
 export default function App() {
@@ -21,6 +22,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<About />} />
+              <Route path="/staff" element={<Staff />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/admission" element={<Admission />} />
               <Route path="/login" element={<Login />} />

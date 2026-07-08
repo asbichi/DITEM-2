@@ -14,6 +14,7 @@ import ExaminationModule from '../components/admin/ExaminationModule';
 import GradingCustoms from '../components/admin/GradingCustoms';
 import AuditLedger from '../components/admin/AuditLedger';
 import SqlConsole from '../components/admin/SqlConsole';
+import StaffManager from '../components/admin/StaffManager';
 
 import PrintableTranscript from '../components/PrintableTranscript';
 import PrintableCertificate from '../components/PrintableCertificate';
@@ -22,7 +23,7 @@ import { logoBase64 } from '../components/logoData';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
 
-type TabType = 'dashboard' | 'students' | 'courses' | 'examination' | 'grading' | 'transcripts' | 'certificates' | 'audit' | 'sql';
+type TabType = 'dashboard' | 'students' | 'courses' | 'examination' | 'grading' | 'transcripts' | 'certificates' | 'audit' | 'sql' | 'staff';
 
 export default function Admin() {
   const navigate = useNavigate();
@@ -224,6 +225,7 @@ export default function Admin() {
     { id: 'grading', label: 'Grading Customizer', icon: Settings, roles: ['Super Administrator', 'Examination Officer'] },
     { id: 'transcripts', label: 'Academic Transcripts', icon: FileText, roles: ['Super Administrator', 'Registrar', 'Examination Officer', 'Data Entry Officer'] },
     { id: 'certificates', label: 'Degree Diplomas', icon: Award, roles: ['Super Administrator', 'Registrar', 'Examination Officer', 'Data Entry Officer'] },
+    { id: 'staff', label: 'Staff Management', icon: Users, roles: ['Super Administrator'] },
     { id: 'audit', label: 'Security Auditing', icon: ShieldAlert, roles: ['Super Administrator'] },
     { id: 'sql', label: 'Database Backup & SQL', icon: Key, roles: ['Super Administrator'] },
   ];
@@ -435,6 +437,7 @@ export default function Admin() {
               {activeTab === 'courses' && <CourseManager />}
               {activeTab === 'examination' && <ExaminationModule />}
               {activeTab === 'grading' && <GradingCustoms />}
+              {activeTab === 'staff' && <StaffManager />}
               {activeTab === 'audit' && <AuditLedger />}
               {activeTab === 'sql' && <SqlConsole />}
 
