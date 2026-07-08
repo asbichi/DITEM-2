@@ -1,5 +1,6 @@
 {
   "name": "DITEM",
   "description": "Dialogue Institute of Technology and Management (DITEM) official website and admission portal.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
