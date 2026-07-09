@@ -423,8 +423,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const defaultStaff: DBStaff[] = [
       {
         id: 'chairman_1',
-        name: 'Alhaji Dr Mahdi Shehu',
-        role: 'Chairman / Founder, Dialogue Group',
+        name: 'Mahdi Shehu',
+        role: 'Chairman/CEO Dialogue Group Ltd.',
         email: 'chairman@dialoguegroup.org',
         phone: '+234 803 123 4567',
         bio: 'Our vision has always been to bridge the gap between education and practical relevance. At DITEM Kaduna, we don\'t just teach technology; we empower students with the digital keys to open any door of success in the 21st century.',
@@ -432,13 +432,31 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isChairman: true,
       },
       {
+        id: 'staff_10',
+        name: "Abdu Shehu",
+        role: "Group Managing Director (Dialogue Group Ltd)",
+        email: "a.shehu@dialoguegroup.org",
+        phone: "+234 800 000 0000",
+        bio: "Visionary Group Managing Director of Dialogue Group Ltd, providing strategic direction, business execution, and leadership oversight to drive innovation and growth across all subsidiaries.",
+        image: "https://i.ibb.co/W4k6FXkD/903cb4cc-717f-4cbd-9b84-a51a5e1d25b0.jpg",
+      },
+      {
         id: 'staff_8',
         name: "Dr Jamilu Abdulhameed",
         role: "Registrar",
         email: "j.abdulhameed@ditem.edu.ng",
         phone: "+234 800 000 0000",
-        bio: "Dedicated Registrar managing academic operations, student admissions, and ensuring seamless administrative processes.",
+        bio: "Oversees academic administration, student registration, admissions, and ensures the integrity of academic records and compliance with institutional policies.",
         image: "https://i.ibb.co/PGc2Fz56/6e86b381-bc3b-4e9d-9983-93e054478ebb.jpg",
+      },
+      {
+        id: 'staff_11',
+        name: "Amina Ishaq Batagarawa",
+        role: "Secretary",
+        email: "a.batagarawa@ditem.edu.ng",
+        phone: "+234 800 000 0000",
+        bio: "Dedicated Secretary ensuring smooth administrative operations and effective communication across the institution.",
+        image: "https://i.ibb.co/90mqzNm/e1eff9c0-d106-41f3-83de-5c41c061d32d.jpg",
       },
       {
         id: 'staff_4',
@@ -448,6 +466,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         phone: "+234 802 555 6666",
         bio: "Oversees student assessments, database grading logs, official academic record-keeping, and examination scheduling. Instructs students in Python, Data Science, AI, and Machine Learning.",
         image: "https://i.ibb.co/C3pxh2x5/f4863bef-7867-4391-9240-293a0d3d464c.jpg",
+      },
+      {
+        id: 'staff_9',
+        name: "SALIHU Baba Musa",
+        role: "Senior Instructor (Microsoft Office Packages/Data Analysis/Generative AI)",
+        email: "s.musa@ditem.edu.ng",
+        phone: "+234 800 000 0000",
+        bio: "Experienced Senior Instructor specializing in Microsoft Office Packages, Data Analysis, and Generative AI, guiding students to master essential productivity and automation tools.",
+        image: "https://i.ibb.co/mVYWWXgv/d80ef649-15f4-4750-9730-e674298aee11.jpg",
       },
       {
         id: 'staff_5',
@@ -485,10 +512,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       // Filter out AI generated staff
       parsedStaff = parsedStaff.filter(s => !['staff_1', 'staff_2', 'staff_3'].includes(s.id));
       
-      // Force update staff_4 with the new details
+      // Force update staff_4, staff_9, staff_10, staff_8, staff_11 and chairman_1 with the new details
       parsedStaff = parsedStaff.map(s => {
-        if (s.id === 'staff_4') {
-          const updated = defaultStaff.find(d => d.id === 'staff_4');
+        if (s.id === 'staff_4' || s.id === 'staff_9' || s.id === 'staff_10' || s.id === 'staff_8' || s.id === 'staff_11' || s.id === 'chairman_1') {
+          const updated = defaultStaff.find(d => d.id === s.id);
           return updated ? { ...s, ...updated } : s;
         }
         return s;

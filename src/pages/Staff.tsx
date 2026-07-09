@@ -1,5 +1,4 @@
 import { motion } from 'motion/react';
-import { Mail, Phone, MapPin, Award, Shield, Cpu, BookOpen } from 'lucide-react';
 
 import { useAppContext } from '../context/AppContext';
 
@@ -97,15 +96,6 @@ export default function Staff() {
                 </p>
                 <span className="absolute right-0 bottom-0 text-slate-200 text-5xl font-serif select-none leading-none">”</span>
               </div>
-
-              <div className="flex flex-wrap gap-4 justify-center text-xs text-slate-500 font-medium pt-4 border-t border-slate-100">
-                <span className="flex items-center gap-1.5 bg-slate-50 px-3.5 py-1.5 rounded-full border border-slate-100">
-                  <MapPin size={13} className="text-brand-accent" /> Kaduna, Nigeria
-                </span>
-                <span className="flex items-center gap-1.5 bg-slate-50 px-3.5 py-1.5 rounded-full border border-slate-100">
-                  <Mail size={13} className="text-brand-accent" /> {chairman.email}
-                </span>
-              </div>
             </motion.div>
           </div>
         )}
@@ -130,7 +120,7 @@ export default function Staff() {
                 
                 <div className="p-8 flex-grow">
                   {/* Portrait Avatar */}
-                  <div className="relative w-24 h-24 mx-auto mb-6 rounded-2xl overflow-hidden shadow-md border-4 border-white group-hover:scale-105 transition-transform duration-300">
+                  <div className="relative mx-auto mb-6 w-24 h-24 shadow-md rounded-2xl border-4 border-white overflow-hidden group-hover:scale-105 transition-transform duration-300">
                     <img 
                       src={member.image} 
                       alt={member.name} 
@@ -148,21 +138,11 @@ export default function Staff() {
                     </p>
                   </div>
 
-                  <p className="text-slate-500 text-xs text-center leading-relaxed font-medium mb-6">
-                    {member.bio}
-                  </p>
-                </div>
-
-                {/* Footer details */}
-                <div className="bg-slate-50 border-t border-slate-100 px-6 py-4 flex flex-col gap-1.5 text-[11px] text-slate-500 font-semibold">
-                  <span className="flex items-center gap-2">
-                    <Mail size={12} className="text-brand-accent shrink-0" />
-                    <span className="truncate">{member.email}</span>
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <Phone size={12} className="text-brand-accent shrink-0" />
-                    <span>{member.phone}</span>
-                  </span>
+                  {member.bio && (
+                    <p className="text-slate-500 text-xs text-center leading-relaxed font-medium mb-6">
+                      {member.bio}
+                    </p>
+                  )}
                 </div>
               </motion.div>
             );
