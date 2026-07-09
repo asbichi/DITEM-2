@@ -65,7 +65,7 @@ export default function Staff() {
               <div className="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 rounded-bl-full pointer-events-none"></div>
               
               {/* Big Circular Portrait of Chairman in the middle */}
-              <div className="relative mx-auto mb-8 w-96 h-96 md:w-[28rem] md:h-[28rem]">
+              <div className="relative mx-auto mb-8 w-36 h-36 xs:w-44 xs:h-44 sm:w-56 sm:h-56 md:w-72 md:h-72 lg:w-[20rem] lg:h-[20rem]">
                 {/* Outer decorative glowing ring */}
                 <div className="absolute inset-0 rounded-full border-4 border-dashed border-brand-accent/40 animate-[spin_40s_linear_infinite]"></div>
                 {/* Inner border ring */}
@@ -75,7 +75,7 @@ export default function Staff() {
                   <img 
                     src={chairman.image} 
                     alt={chairman.name} 
-                    className="w-full h-full object-cover object-top hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover object-center hover:scale-110 transition-transform duration-500"
                     referrerPolicy="no-referrer"
                   />
                 </div>
@@ -120,11 +120,15 @@ export default function Staff() {
                 
                 <div className="p-8 flex-grow">
                   {/* Portrait Avatar */}
-                  <div className="relative mx-auto mb-6 w-24 h-24 shadow-md rounded-2xl border-4 border-white overflow-hidden group-hover:scale-105 transition-transform duration-300">
+                  <div className="relative mx-auto mb-6 w-32 h-32 shadow-md rounded-2xl border-4 border-white overflow-hidden group-hover:scale-105 transition-transform duration-300">
                     <img 
                       src={member.image} 
                       alt={member.name} 
-                      className="w-full h-full object-cover object-top"
+                      className={`w-full h-full object-cover ${
+                        (member.name === 'Amina Ishaq Batagarawa' || member.role.toLowerCase().includes('secretary')) 
+                          ? 'object-center' 
+                          : 'object-top'
+                      }`}
                       referrerPolicy="no-referrer"
                     />
                   </div>

@@ -428,7 +428,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         email: 'chairman@dialoguegroup.org',
         phone: '+234 803 123 4567',
         bio: 'Our vision has always been to bridge the gap between education and practical relevance. At DITEM Kaduna, we don\'t just teach technology; we empower students with the digital keys to open any door of success in the 21st century.',
-        image: 'https://i.ibb.co/TB0tYsRx/107006749-2648812945398748-5517445151314997652-n-1.jpg',
+        image: 'https://i.ibb.co/fGC8C6tQ/95205809-392a-4acf-b6ec-a024e7a11ef7.jpg',
         isChairman: true,
       },
       {
@@ -438,7 +438,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         email: "a.shehu@dialoguegroup.org",
         phone: "+234 800 000 0000",
         bio: "Visionary Group Managing Director of Dialogue Group Ltd, providing strategic direction, business execution, and leadership oversight to drive innovation and growth across all subsidiaries.",
-        image: "https://i.ibb.co/W4k6FXkD/903cb4cc-717f-4cbd-9b84-a51a5e1d25b0.jpg",
+        image: "https://i.ibb.co/LhdTtSBY/6b6f7a9a-71f8-4396-8c3f-e815d7aa3cd5.jpg",
       },
       {
         id: 'staff_8',
@@ -456,7 +456,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         email: "a.batagarawa@ditem.edu.ng",
         phone: "+234 800 000 0000",
         bio: "Dedicated Secretary ensuring smooth administrative operations and effective communication across the institution.",
-        image: "https://i.ibb.co/90mqzNm/e1eff9c0-d106-41f3-83de-5c41c061d32d.jpg",
+        image: "https://i.ibb.co/mjnc5RV/ac34c08b-07ba-4eb2-8895-ce94476eca6d.jpg",
       },
       {
         id: 'staff_4',
