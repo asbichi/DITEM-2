@@ -118,7 +118,7 @@ export default function VerificationQRCode({
                 <div className="flex justify-between items-center pb-2.5 border-b border-slate-100">
                   <div className="flex items-center gap-2 text-slate-500 text-xs font-semibold">
                     <Hash size={14} />
-                    <span>Registration No:</span>
+                    <span>Exam Number:</span>
                   </div>
                   <span className="text-sm font-mono font-bold text-slate-700">{registrationNumber}</span>
                 </div>

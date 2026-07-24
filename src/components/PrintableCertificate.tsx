@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { TranscriptData } from './PrintableTranscript';
-import { Palette, Shield, Award, Sparkles } from 'lucide-react';
+import { Palette, Shield, Award, Sparkles, Check } from 'lucide-react';
 import VerificationQRCode from './VerificationQRCode';
 import { logoBase64 } from './logoData';
 
@@ -23,6 +23,15 @@ export const DitemLogo = ({ className = "h-16" }: { className?: string }) => (
 export default function PrintableCertificate({ data }: PrintableCertificateProps) {
   // Available design themes
   const [stylePreset, setStylePreset] = useState<'official' | 'ivory' | 'classic'>('official');
+  const [calligraphyPreset, setCalligraphyPreset] = useState<'pinyon' | 'parisienne' | 'monsieur' | 'alexbrush' | 'greatvibes'>('pinyon');
+
+  const fontClassMap = {
+    pinyon: 'font-cursive-pinyon',
+    parisienne: 'font-cursive-parisienne',
+    monsieur: 'font-cursive-monsieur',
+    alexbrush: 'font-cursive-alex',
+    greatvibes: 'font-cursive-vibes',
+  };
 
   // Automatically calculate classification
   const getClassification = (gpaStr: string) => {
@@ -35,6 +44,17 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
   };
 
   const classification = getClassification(data.gpa);
+
+  // Format name in Title Case (Capital First, Lowercase Rest per word)
+  const formatName = (nameStr: string) => {
+    if (!nameStr) return 'Student Name';
+    return nameStr
+      .toLowerCase()
+      .trim()
+      .split(/\s+/)
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
 
   // Date formatting
   const displayDate = new Date().toLocaleDateString('en-US', {
@@ -50,33 +70,86 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
   return (
     <div className="relative w-full max-w-[1050px] mx-auto">
       
-      {/* On-Screen Interactive Theme Selector (Hidden in print mode) */}
-      <div className="print:hidden mb-4 bg-white border border-slate-200 rounded-xl p-3 shadow-sm flex flex-col sm:flex-row justify-between items-center gap-3">
-        <div className="flex items-center gap-2">
-          <Palette size={16} className="text-rose-600" />
-          <span className="text-xs font-bold text-slate-700 font-sans">Certificate Background Tone:</span>
+      {/* On-Screen Interactive Controls (Hidden in print mode) */}
+      <div className="print:hidden mb-4 bg-white border border-slate-200 rounded-xl p-4 shadow-sm space-y-3">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+          <div className="flex items-center gap-2">
+            <Palette size={16} className="text-rose-600 animate-pulse" />
+            <span className="text-xs font-bold text-slate-700 font-sans">Certificate Background Tone:</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {[
+              { id: 'official', label: 'DITEM Authentic (Textured Gold)', dots: ['bg-[#fdf9ee]', 'bg-[#c2272d]'] },
+              { id: 'ivory', label: 'Polished Ivory Cream', dots: ['bg-[#faf6eb]', 'bg-[#eab308]'] },
+              { id: 'classic', label: 'Minimalist Off-White', dots: ['bg-[#fafafa]', 'bg-stone-800'] }
+            ].map((theme) => {
+              const isSelected = stylePreset === theme.id;
+              return (
+                <button
+                  key={theme.id}
+                  onClick={() => setStylePreset(theme.id as any)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-all shadow-sm ${isSelected ? 'bg-slate-800 text-white border-slate-800 scale-105' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'}`}
+                >
+                  <div className="flex gap-0.5 mr-0.5">
+                    <span className={`w-2 h-2 rounded-full ${theme.dots[0]}`}></span>
+                    <span className={`w-2 h-2 rounded-full ${theme.dots[1]}`}></span>
+                  </div>
+                  {theme.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
-        <div className="flex flex-wrap gap-1.5">
-          {[
-            { id: 'official', label: 'DITEM Authentic (Textured Gold)', dots: ['bg-[#fdf9ee]', 'bg-[#c2272d]'] },
-            { id: 'ivory', label: 'Polished Ivory Cream', dots: ['bg-[#faf6eb]', 'bg-[#eab308]'] },
-            { id: 'classic', label: 'Minimalist Off-White', dots: ['bg-[#fafafa]', 'bg-stone-800'] }
-          ].map((theme) => {
-            const isSelected = stylePreset === theme.id;
-            return (
-              <button
-                key={theme.id}
-                onClick={() => setStylePreset(theme.id as any)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-bold border transition-all shadow-sm ${isSelected ? 'bg-slate-800 text-white border-slate-800' : 'bg-slate-50 hover:bg-slate-100 text-slate-600 border-slate-200'}`}
-              >
-                <div className="flex gap-0.5 mr-0.5">
-                  <span className={`w-2 h-2 rounded-full ${theme.dots[0]}`}></span>
-                  <span className={`w-2 h-2 rounded-full ${theme.dots[1]}`}></span>
-                </div>
-                {theme.label}
-              </button>
-            );
-          })}
+
+        <div className="h-[1px] bg-slate-100"></div>
+
+        <div className="space-y-3">
+          <div className="flex items-center gap-2">
+            <Sparkles size={16} className="text-amber-600 animate-pulse" />
+            <span className="text-xs font-extrabold text-slate-700 font-sans tracking-wide uppercase">Calligraphy Style Explorer:</span>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3">
+            {[
+              { id: 'pinyon', label: 'Pinyon Script', desc: 'Grand Elegant', fontClass: 'font-cursive-pinyon' },
+              { id: 'parisienne', label: 'Parisienne', desc: 'Fluid Flow', fontClass: 'font-cursive-parisienne' },
+              { id: 'monsieur', label: 'Monsieur La Doulaise', desc: 'Vintage Swirly', fontClass: 'font-cursive-monsieur' },
+              { id: 'alexbrush', label: 'Alex Brush', desc: 'Classic Script', fontClass: 'font-cursive-alex' },
+              { id: 'greatvibes', label: 'Great Vibes', desc: 'Chancery Script', fontClass: 'font-cursive-vibes' }
+            ].map((font) => {
+              const isSelected = calligraphyPreset === font.id;
+              return (
+                <button
+                  key={font.id}
+                  onClick={() => setCalligraphyPreset(font.id as any)}
+                  className={`flex flex-col justify-between p-3.5 rounded-xl border text-left transition-all duration-300 relative overflow-hidden group select-none cursor-pointer ${
+                    isSelected 
+                      ? 'bg-amber-50/70 border-amber-600 ring-4 ring-amber-600/10 scale-[1.02] shadow-md' 
+                      : 'bg-slate-50/80 hover:bg-slate-50 hover:scale-[1.01] border-slate-200 hover:border-slate-300 shadow-sm'
+                  }`}
+                >
+                  {/* Selection Badge */}
+                  <div className={`absolute top-2 right-2 w-4 h-4 rounded-full flex items-center justify-center transition-all ${
+                    isSelected ? 'bg-amber-600 text-white scale-100' : 'bg-slate-200 text-slate-400 scale-90 opacity-0 group-hover:opacity-100'
+                  }`}>
+                    <Check size={10} strokeWidth={3} />
+                  </div>
+
+                  <div className="space-y-0.5">
+                    <span className="block text-[11px] font-black text-slate-800 leading-none">{font.label}</span>
+                    <span className="block text-[9px] font-bold text-slate-400 leading-none">{font.desc}</span>
+                  </div>
+
+                  {/* Real-time Visual Example of Student's Name */}
+                  <div className="mt-4 pt-3 border-t border-slate-200/50 text-center min-h-[44px] flex items-center justify-center overflow-visible w-full">
+                    <span className={`text-amber-950 font-bold leading-none tracking-wide whitespace-nowrap text-2xl sm:text-3xl ${font.fontClass}`} style={{ overflow: 'visible', fontWeight: 'bold' }}>
+                      {formatName(data.studentName)}
+                    </span>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -111,6 +184,28 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
           .font-cursive-italic {
             font-family: 'Great Vibes', cursive;
           }
+          .font-cursive-pinyon {
+            font-family: 'Pinyon Script', cursive;
+            font-size: 2.15em;
+            letter-spacing: 0.02em;
+          }
+          .font-cursive-parisienne {
+            font-family: 'Parisienne', cursive;
+            font-size: 1.95em;
+          }
+          .font-cursive-monsieur {
+            font-family: 'Monsieur La Doulaise', cursive;
+            font-size: 2.5em;
+            letter-spacing: 0.03em;
+          }
+          .font-cursive-alex {
+            font-family: 'Alex Brush', cursive;
+            font-size: 1.95em;
+          }
+          .font-cursive-vibes {
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.05em;
+          }
           
           /* Watermark background texture */
           .bg-watermark {
@@ -142,25 +237,31 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
         <div className="relative z-10 flex flex-col justify-between h-full min-h-[640px]">
           
           {/* Header & Logo */}
-          <div className="text-center flex flex-col items-center">
+          <div className="text-center flex flex-col items-center w-full">
             <DitemLogo className="mb-4" />
             
-            <h1 className="text-2xl sm:text-3xl md:text-4xl whitespace-nowrap font-black tracking-wide text-red-700 font-display-title uppercase leading-tight" style={{ fontWeight: 900, textShadow: '1px 1px 0px rgba(0,0,0,0.1)' }}>
-              Dialogue Institute of Technology & Management
-            </h1>
-            <p className="text-sm md:text-base font-bold tracking-widest text-stone-800 font-display-title mt-1">
+            {/* Super Responsive Fit-to-Page One-Line Heading */}
+            <div className="w-full max-w-[95%] mx-auto my-1 select-none overflow-visible">
+              <svg viewBox="0 0 1000 44" className="w-full h-auto font-display-title font-black uppercase text-red-700" style={{ textShadow: '1px 1px 0px rgba(0,0,0,0.1)' }}>
+                <text x="50%" y="34" textAnchor="middle" fill="currentColor" style={{ fontWeight: 900, fontSize: '30px', letterSpacing: '0.04em' }}>
+                  Dialogue Institute of Technology & Management
+                </text>
+              </svg>
+            </div>
+            
+            <p className="text-[10px] sm:text-xs md:text-sm font-bold tracking-widest text-stone-800 font-display-title mt-1.5">
               KADUNA
             </p>
             
-            <p className="text-base md:text-lg italic text-stone-600 font-body-serif mt-6">
+            <p className="text-sm md:text-base italic text-stone-600 font-body-serif mt-5">
               This is to certify that:
             </p>
           </div>
 
           {/* Student Name placed OVER horizontal line */}
-          <div className="text-center my-8 relative max-w-[750px] mx-auto w-full">
-            <p className="text-3xl md:text-4xl font-bold font-body-serif text-stone-900 tracking-wide pb-2 relative z-10">
-              {data.studentName || 'Student Name'}
+          <div className="text-center my-6 relative max-w-[750px] mx-auto w-full px-4 overflow-visible">
+            <p className={`text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-amber-950 tracking-wide pb-4 pt-4 relative z-10 font-bold leading-none whitespace-nowrap ${fontClassMap[calligraphyPreset]}`} style={{ overflow: 'visible', fontWeight: 'bold' }}>
+              {formatName(data.studentName)}
             </p>
             <div className="w-full h-[1.5px] bg-stone-400 absolute bottom-0 left-0"></div>
           </div>
@@ -179,8 +280,8 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
           </div>
 
           {/* Awarded Program placed OVER horizontal line */}
-          <div className="text-center my-8 relative max-w-[850px] mx-auto w-full">
-            <p className="text-xl md:text-2xl font-extrabold text-[#b32424] uppercase tracking-wider pb-2 font-display-title relative z-10">
+          <div className="text-center my-6 relative max-w-[850px] mx-auto w-full px-4">
+            <p className="text-xs sm:text-sm md:text-lg lg:text-xl xl:text-2xl font-extrabold text-[#b32424] uppercase tracking-wider pb-2 font-display-title relative z-10 whitespace-nowrap">
               {data.programme || 'DIPLOMA IN INFORMATION AND COMMUNICATION TECHNOLOGY'}
             </p>
             <div className="w-full h-[1.5px] bg-stone-400 absolute bottom-0 left-0"></div>
@@ -195,6 +296,13 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
               </p>
               <div className="w-full h-[1px] bg-stone-400 absolute bottom-0 left-0"></div>
             </div>
+          </div>
+
+          {/* Student Identifiers for Verification */}
+          <div className="flex flex-wrap justify-center gap-4 md:gap-12 text-[10px] md:text-xs text-stone-500 font-sans tracking-wide uppercase font-bold mt-3">
+            <span>Exam Number: <strong className="text-stone-800 font-mono">{data.registrationNumber}</strong></span>
+            {data.matricNumber && <span>Matric Number: <strong className="text-stone-800 font-mono">{data.matricNumber}</strong></span>}
+            {data.sessionBatch && <span>Session/Batch: <strong className="text-stone-800 font-semibold">{data.sessionBatch}</strong></span>}
           </div>
 
           {/* Bottom Area: Rector, Seal + Date, Registrar, QR Stamp */}
@@ -266,8 +374,8 @@ export default function PrintableCertificate({ data }: PrintableCertificateProps
               <span>Security Code: <strong className="text-stone-700">{vCode}</strong></span>
             </div>
             
-            <div className="text-center italic font-sans text-[10px] text-stone-400 max-w-[320px]">
-              Valid with official registrar stamp and secure digital cryptographic check.
+            <div className="text-center italic font-sans text-[9px] text-stone-500 max-w-[360px] leading-normal">
+              Dialogue Institute of Technology & Management is fully accredited & licensed. Valid with official board seal, authorized signatures, and secure cryptographic check.
             </div>
 
             {/* Micro Secure QR badge */}

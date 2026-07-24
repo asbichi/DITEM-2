@@ -282,12 +282,36 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
 
   const [dbProgrammes, setDbProgrammes] = useState<DBProgramme[]>(() => {
     const saved = localStorage.getItem('ditem_programmes');
-    if (saved) return JSON.parse(saved);
-    return [
-      { id: 'p1', name: 'Diploma in Information and Communication Technology', code: 'DICT', departmentId: 'd1', duration: '3 Months' },
-      { id: 'p2', name: 'Higher National Diploma in Software Engineering', code: 'SE', departmentId: 'd1', duration: '2 Years' },
-      { id: 'p3', name: 'National Diploma in Business Administration', code: 'NDBA', departmentId: 'd2', duration: '2 Years' },
-    ];
+    let loaded: DBProgramme[];
+    if (saved) {
+      try {
+        loaded = JSON.parse(saved);
+      } catch (e) {
+        loaded = [];
+      }
+    } else {
+      loaded = [
+        { id: 'p1', name: 'Professional Diploma in Information and Communication Technology (ICT)', code: 'DICT', departmentId: 'd1', duration: '3 Months' },
+        { id: 'p2', name: 'Professional Certificate in Software Engineering & Web Development', code: 'CSEWD', departmentId: 'd1', duration: '3 Months' },
+        { id: 'p3', name: 'Professional Certificate in Cyber Security & Ethical Hacking', code: 'CCSEH', departmentId: 'd1', duration: '3 Months' },
+        { id: 'p4', name: 'Professional Certificate in Python Programming & Data Science', code: 'CPPDS', departmentId: 'd1', duration: '3 Months' },
+      ];
+    }
+    
+    // Ensure existing database programmes are migrated to meet the requirement
+    // "we only issue professional diploma in ict, and other certificate courses"
+    return loaded.map(p => {
+      if (p.id === 'p1') {
+        return { ...p, name: 'Professional Diploma in Information and Communication Technology (ICT)', code: 'DICT' };
+      }
+      if (p.id === 'p2' && (p.name.includes('Higher National') || p.name.includes('Software Engineering') || p.code === 'SE')) {
+        return { ...p, name: 'Professional Certificate in Software Engineering & Web Development', code: 'CSEWD', duration: '3 Months' };
+      }
+      if (p.id === 'p3' && (p.name.includes('National Diploma') || p.name.includes('Business') || p.code === 'NDBA')) {
+        return { ...p, name: 'Professional Certificate in Cyber Security & Ethical Hacking', code: 'CCSEH', departmentId: 'd1', duration: '3 Months' };
+      }
+      return p;
+    });
   });
 
   const [dbSessions, setDbSessions] = useState<DBSession[]>(() => {
@@ -351,14 +375,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const saved = localStorage.getItem('ditem_db_courses');
     if (saved) return JSON.parse(saved);
     return [
-      { id: 'c1', courseCode: 'DICT 101', courseTitle: 'Introduction to Computer Systems', creditUnit: 3, semester: 'First', level: 'ND1', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c2', courseCode: 'DICT 102', courseTitle: 'Web Technologies (HTML/CSS/JS)', creditUnit: 4, semester: 'First', level: 'ND1', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c3', courseCode: 'DICT 103', courseTitle: 'Programming in Python', creditUnit: 3, semester: 'Second', level: 'ND1', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c4', courseCode: 'DICT 104', courseTitle: 'Database Management Systems', creditUnit: 3, semester: 'Second', level: 'ND1', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c5', courseCode: 'DICT 201', courseTitle: 'Software Engineering Principles', creditUnit: 3, semester: 'First', level: 'ND2', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c6', courseCode: 'DICT 202', courseTitle: 'Data Structures & Algorithms', creditUnit: 4, semester: 'First', level: 'ND2', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c7', courseCode: 'DICT 203', courseTitle: 'Cyber Security & Ethical Hacking', creditUnit: 3, semester: 'Second', level: 'ND2', departmentId: 'd1', programmeId: 'p1' },
-      { id: 'c8', courseCode: 'DICT 204', courseTitle: 'Project Development & Seminar', creditUnit: 4, semester: 'Second', level: 'ND2', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c1', courseCode: 'DICT 101', courseTitle: 'Introduction to Computer Systems', creditUnit: 3, semester: 'First', level: 'Module 1', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c2', courseCode: 'DICT 102', courseTitle: 'Web Technologies (HTML/CSS/JS)', creditUnit: 4, semester: 'First', level: 'Module 1', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c3', courseCode: 'DICT 103', courseTitle: 'Programming in Python', creditUnit: 3, semester: 'Second', level: 'Module 1', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c4', courseCode: 'DICT 104', courseTitle: 'Database Management Systems', creditUnit: 3, semester: 'Second', level: 'Module 1', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c5', courseCode: 'DICT 201', courseTitle: 'Software Engineering Principles', creditUnit: 3, semester: 'First', level: 'Module 2', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c6', courseCode: 'DICT 202', courseTitle: 'Data Structures & Algorithms', creditUnit: 4, semester: 'First', level: 'Module 2', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c7', courseCode: 'DICT 203', courseTitle: 'Cyber Security & Ethical Hacking', creditUnit: 3, semester: 'Second', level: 'Module 2', departmentId: 'd1', programmeId: 'p1' },
+      { id: 'c8', courseCode: 'DICT 204', courseTitle: 'Project Development & Seminar', creditUnit: 4, semester: 'Second', level: 'Module 2', departmentId: 'd1', programmeId: 'p1' },
     ];
   });
 
@@ -719,7 +743,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       id: 'st_' + Date.now()
     };
     setDbStudents(prev => [newStudent, ...prev]);
-    logActivity(currentUser?.id || 'system', 'Student Registered', `Registered student ${student.fullName} with Reg No: ${student.registrationNumber}`);
+    logActivity(currentUser?.id || 'system', 'Student Registered', `Registered student ${student.fullName} with Exam No: ${student.registrationNumber}`);
     return newStudent;
   };
 
@@ -883,7 +907,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const addTranscriptDB = (studentId: string, issuedBy: string): DBTranscript => {
     // Generate Serial Number TRANS/2026/00000X
     const year = new Date().getFullYear();
-    const count = dbTranscripts.length + 1;
+    const count = Math.max(dbTranscripts.length, dbCertificates.length) + 1;
     const serial = String(count).padStart(6, '0');
     const transcriptNum = `TRANS/${year}/${serial}`;
 
@@ -902,6 +926,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setDbTranscripts(prev => [newTranscript, ...prev]);
     const student = dbStudents.find(s => s.id === studentId);
     logActivity(currentUser?.id || 'system', 'Transcript Generated', `Generated academic transcript (${finalTranscriptNum}) for student ${student?.fullName || studentId}`);
+
+    // Auto-generate linked certificate with same serial suffix to keep them the same and linked on the system
+    const linkedCertNum = finalTranscriptNum.replace('TRANS/', 'CERT/');
+    const isCertIssued = dbCertificates.some(c => c.studentId === studentId);
+    if (!isCertIssued) {
+      const verificationCode = 'DITEM-SEC-' + Math.random().toString(16).substring(2, 8).toUpperCase();
+      const newCertificate: DBCertificate = {
+        id: 'cer_' + Date.now(),
+        certificateNumber: linkedCertNum,
+        studentId,
+        verificationCode,
+        dateOfIssue: newTranscript.dateOfIssue,
+        issuedBy,
+        status: 'Issued'
+      };
+      setDbCertificates(prev => [newCertificate, ...prev]);
+      logActivity(currentUser?.id || 'system', 'Certificate Issued', `Generated professional degree diploma certificate (${linkedCertNum}) with SecCode ${verificationCode} for student ${student?.fullName || studentId}`);
+    }
     
     return newTranscript;
   };
@@ -965,7 +1007,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const addCertificateDB = (studentId: string, issuedBy: string): DBCertificate => {
     // Generate Serial Number CERT/2026/00000X
     const year = new Date().getFullYear();
-    const count = dbCertificates.length + 1;
+    const count = Math.max(dbTranscripts.length, dbCertificates.length) + 1;
     const serial = String(count).padStart(6, '0');
     const certificateNum = `CERT/${year}/${serial}`;
 
@@ -990,6 +1032,21 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const student = dbStudents.find(s => s.id === studentId);
     logActivity(currentUser?.id || 'system', 'Certificate Issued', `Generated professional degree diploma certificate (${finalCertificateNum}) with SecCode ${verificationCode} for student ${student?.fullName || studentId}`);
     
+    // Auto-generate linked transcript with same serial suffix to keep them the same and linked on the system
+    const linkedTranscriptNum = finalCertificateNum.replace('CERT/', 'TRANS/');
+    const isTranscriptIssued = dbTranscripts.some(t => t.studentId === studentId);
+    if (!isTranscriptIssued) {
+      const newTranscript: DBTranscript = {
+        id: 't_' + Date.now(),
+        transcriptNumber: linkedTranscriptNum,
+        studentId,
+        dateOfIssue: newCertificate.dateOfIssue,
+        issuedBy
+      };
+      setDbTranscripts(prev => [newTranscript, ...prev]);
+      logActivity(currentUser?.id || 'system', 'Transcript Generated', `Generated academic transcript (${linkedTranscriptNum}) for student ${student?.fullName || studentId}`);
+    }
+
     return newCertificate;
   };
 

@@ -76,7 +76,7 @@ export default function ExaminationModule() {
     if (!csvText.trim()) return;
 
     const rows = csvText.trim().split('\n');
-    const startIdx = rows[0].toLowerCase().includes('regnumber') ? 1 : 0;
+    const startIdx = rows[0].toLowerCase().includes('examnumber') || rows[0].toLowerCase().includes('regnumber') ? 1 : 0;
     const recordsToImport: any[] = [];
     const errors: string[] = [];
 
@@ -87,7 +87,7 @@ export default function ExaminationModule() {
       const cols = row.split(',').map(s => s.trim().replace(/^"|"$/g, ''));
 
       if (cols.length < 7) {
-        errors.push(`Row ${i + 1}: Insufficient columns. Format must be: Registration Number, Student Name, Programme, Course Code, Course Title, Credit Unit, Score`);
+        errors.push(`Row ${i + 1}: Insufficient columns. Format must be: Exam Number, Student Name, Programme, Course Code, Course Title, Credit Unit, Score`);
         continue;
       }
 
@@ -100,7 +100,7 @@ export default function ExaminationModule() {
       const course = dbCourses.find(c => c.courseCode.toUpperCase() === courseCodeInput.toUpperCase());
 
       if (!student) {
-        errors.push(`Row ${i + 1}: Student with Reg No "${regNoInput}" does not exist in the students database.`);
+        errors.push(`Row ${i + 1}: Student with Exam No "${regNoInput}" does not exist in the students database.`);
         continue;
       }
       if (!course) {
@@ -295,7 +295,7 @@ export default function ExaminationModule() {
               Copy your marks spreadsheet data directly, paste it inside the textarea below, and submit. Ensure columns are exactly as shown below:
             </p>
             <span className="font-mono text-slate-600 block bg-slate-100 p-2.5 rounded border border-slate-200 select-all overflow-x-auto leading-tight whitespace-nowrap">
-              Registration Number,Student Name,Programme,Course Code,Course Title,Credit Unit,Score<br />
+              Exam Number,Student Name,Programme,Course Code,Course Title,Credit Unit,Score<br />
               DITEM/DICT/2026/0045,Ahmad Musa,DICT,DICT 101,Introduction to Computing,3,80.5<br />
               DITEM/DICT/2026/0012,Sarah Jones,DICT,DICT 101,Introduction to Computing,3,65
             </span>

@@ -40,7 +40,7 @@ export default function PrintableAdmissionForm({ formData }: PrintableAdmissionF
         <div className="flex-shrink-0 flex flex-col items-center">
           <div className="w-32 h-40 border-2 border-gray-300 flex items-center justify-center bg-gray-50 overflow-hidden">
             {formData.pictureUrl ? (
-              <img src={formData.pictureUrl} alt="Student Passport" className="w-full h-full object-cover" />
+              <img src={formData.pictureUrl} alt="Student Passport" className="w-full h-full object-cover" crossOrigin="anonymous" />
             ) : (
               <span className="text-gray-400 text-sm text-center">Passport<br/>Photograph</span>
             )}

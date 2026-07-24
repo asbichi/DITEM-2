@@ -163,7 +163,7 @@ export default function Admin() {
       const canvas = await html2canvas(element, { 
         scale: 2.0, 
         useCORS: true, 
-        allowTaint: true,
+        allowTaint: false,
         logging: false,
         backgroundColor: '#ffffff'
       });
@@ -406,7 +406,7 @@ export default function Admin() {
                     <img src={std.studentPhotograph} alt={std.fullName} className="w-12 h-12 rounded-full object-cover border border-slate-100" />
                     <div>
                       <span className="block font-black text-slate-800 uppercase">{std.fullName}</span>
-                      <span className="text-[10px] font-bold text-slate-400 font-mono">{std.registrationNumber}</span>
+                      <span className="text-[10px] font-bold text-slate-400 font-mono">Exam No: {std.registrationNumber}</span>
                     </div>
                   </div>
                   <div className="flex gap-1.5">
@@ -461,7 +461,7 @@ export default function Admin() {
                       <thead>
                         <tr className="bg-slate-50 border-b border-slate-150 text-slate-400 text-[10px] uppercase font-bold">
                           <th className="py-3 px-5">Student profile</th>
-                          <th className="py-3 px-5">Registration No</th>
+                          <th className="py-3 px-5">Exam Number</th>
                           <th className="py-3 px-5">Standing CGPA</th>
                           <th className="py-3 px-5 text-center">Status</th>
                           <th className="py-3 px-5 text-center">Actions</th>

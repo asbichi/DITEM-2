@@ -54,7 +54,7 @@ export default function StudentRegistrar() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!fullName || !regNo) {
-      alert('Full Name and Registration Number are required.');
+      alert('Full Name and Exam Number are required.');
       return;
     }
 
@@ -122,7 +122,7 @@ export default function StudentRegistrar() {
       const cols = row.split(',').map(s => s.trim().replace(/^"|"$/g, '')); // basic csv quote strip
 
       if (cols.length < 2) {
-        errors.push(`Row ${i + 1}: Insufficient column count. Must contain: FullName, RegNo, [AdmNo, MatNo, Gender, State]`);
+        errors.push(`Row ${i + 1}: Insufficient column count. Must contain: FullName, ExamNo, [AdmNo, MatNo, Gender, State]`);
         continue;
       }
 
@@ -135,14 +135,14 @@ export default function StudentRegistrar() {
       const dobVal = cols[6] || '2001-01-01';
 
       if (!fNameVal || !regNoVal) {
-        errors.push(`Row ${i + 1}: Missing mandatory Full Name or Registration Number.`);
+        errors.push(`Row ${i + 1}: Missing mandatory Full Name or Exam Number.`);
         continue;
       }
 
-      // Check for duplicate Reg Number
+      // Check for duplicate Exam Number
       const isDuplicate = dbStudents.some(s => s.registrationNumber.toUpperCase() === regNoVal.toUpperCase());
       if (isDuplicate) {
-        errors.push(`Row ${i + 1}: Registration Number ${regNoVal} is already taken.`);
+        errors.push(`Row ${i + 1}: Exam Number ${regNoVal} is already taken.`);
         continue;
       }
 
@@ -164,7 +164,7 @@ export default function StudentRegistrar() {
         });
         successCount++;
       } catch (err) {
-        errors.push(`Row ${i + 1}: Registration failed due to system error.`);
+        errors.push(`Row ${i + 1}: Student record creation failed due to system error.`);
       }
     }
 
@@ -202,7 +202,7 @@ export default function StudentRegistrar() {
           <Search size={18} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             type="text"
-            placeholder="Search student by Name, Reg No, or Matric No..."
+            placeholder="Search student by Name, Exam No, or Matric No..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="w-full pl-10 pr-4 py-2 text-xs font-semibold rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50/50"
@@ -254,7 +254,7 @@ export default function StudentRegistrar() {
             <thead>
               <tr className="bg-slate-50/80 border-b border-slate-100 text-slate-400 text-[10px] font-bold tracking-wider uppercase">
                 <th className="py-4 px-6">Student details</th>
-                <th className="py-4 px-6">Registration Code</th>
+                <th className="py-4 px-6">Exam Number</th>
                 <th className="py-4 px-6">Programme / Dept</th>
                 <th className="py-4 px-6">Origin Details</th>
                 <th className="py-4 px-6">Grad Year</th>
@@ -364,7 +364,7 @@ export default function StudentRegistrar() {
                   />
                 </div>
                 <div>
-                  <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Registration Number *</label>
+                  <label className="block text-[10px] uppercase font-bold text-slate-400 mb-1">Exam Number *</label>
                   <input
                     type="text" required value={regNo} onChange={(e) => setRegNo(e.target.value)}
                     className="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 focus:outline-none focus:border-blue-500 bg-slate-50/50 uppercase"
@@ -509,7 +509,7 @@ export default function StudentRegistrar() {
               <div className="bg-slate-50 p-4 rounded-xl border border-slate-100 text-[11px] text-slate-500 leading-relaxed font-semibold">
                 <span className="text-slate-700 uppercase font-bold block mb-1">Paste CSV Template format:</span>
                 <span className="font-mono text-slate-600 block bg-slate-100 p-2 rounded border border-slate-200 overflow-x-auto select-all">
-                  fullName,registrationNumber,admissionNumber,matricNumber,gender,state<br />
+                  fullName,examNumber,admissionNumber,matricNumber,gender,state<br />
                   SULEIMAN BELLO,DITEM/DICT/2026/0091,ADM/2026/0191,MAT/DICT/2026/0091,Male,Kaduna<br />
                   MARYAM ISAH,DITEM/DICT/2026/0092,ADM/2026/0192,MAT/DICT/2026/0092,Female,Kano
                 </span>

@@ -128,42 +128,90 @@ export default function PrintableTranscript({ data }: PrintableTranscriptProps) 
       </div>
 
       {/* Student Profile Block matching image layout exactly */}
-      <div className="space-y-3.5 border-b border-stone-200 pb-8 mb-10 text-sm md:text-base relative z-10 font-medium">
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-1 py-1">
-          <span className="md:col-span-4 text-stone-500 font-bold uppercase tracking-wider text-xs md:text-sm flex items-center">
-            STUDENT'S NAME:
-          </span>
-          <span className="md:col-span-8 font-extrabold text-stone-900 uppercase tracking-wide select-all text-sm md:text-base">
-            {data.studentName}
-          </span>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-1 py-1">
-          <span className="md:col-span-4 text-stone-500 font-bold uppercase tracking-wider text-xs md:text-sm flex items-center">
-            REGISTRATION NUMBER:
-          </span>
-          <span className="md:col-span-8 font-mono-retro font-bold text-stone-950 select-all text-sm md:text-base">
-            {data.registrationNumber}
-          </span>
+      <div className="flex flex-col md:flex-row gap-6 border-b border-stone-200 pb-8 mb-10 text-xs md:text-sm relative z-10 font-medium items-start justify-between">
+        <div className="space-y-2.5 flex-grow w-full md:w-auto">
+          <div className="grid grid-cols-12 gap-1 py-0.5">
+            <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">STUDENT'S NAME:</span>
+            <span className="col-span-8 font-extrabold text-stone-900 uppercase tracking-wide select-all text-xs md:text-sm">{data.studentName}</span>
+          </div>
+          
+          <div className="grid grid-cols-12 gap-1 py-0.5">
+            <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">EXAM NUMBER:</span>
+            <span className="col-span-8 font-mono-retro font-bold text-stone-950 select-all text-xs md:text-sm">{data.registrationNumber}</span>
+          </div>
+
+          {data.matricNumber && (
+            <div className="grid grid-cols-12 gap-1 py-0.5">
+              <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">MATRIC NUMBER:</span>
+              <span className="col-span-8 font-mono-retro font-semibold text-stone-800 uppercase text-xs md:text-sm">{data.matricNumber}</span>
+            </div>
+          )}
+
+          {data.admissionNumber && (
+            <div className="grid grid-cols-12 gap-1 py-0.5">
+              <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">ADMISSION NO:</span>
+              <span className="col-span-8 font-mono-retro font-semibold text-stone-800 uppercase text-xs md:text-sm">{data.admissionNumber}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-12 gap-1 py-0.5">
+            <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">PROGRAMME:</span>
+            <span className="col-span-8 font-extrabold text-stone-900 uppercase text-xs md:text-sm">{data.programme}</span>
+          </div>
+
+          {data.department && (
+            <div className="grid grid-cols-12 gap-1 py-0.5">
+              <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">DEPARTMENT:</span>
+              <span className="col-span-8 font-bold text-stone-800 uppercase text-xs md:text-sm">{data.department}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-12 gap-1 py-0.5">
+            <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">DURATION:</span>
+            <span className="col-span-8 font-bold text-stone-800 uppercase text-xs md:text-sm">{data.duration || 'THREE (3) MONTHS'}</span>
+          </div>
+
+          {data.sessionBatch && (
+            <div className="grid grid-cols-12 gap-1 py-0.5">
+              <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">SESSION / BATCH:</span>
+              <span className="col-span-8 font-semibold text-stone-800 uppercase text-xs md:text-sm">{data.sessionBatch}</span>
+            </div>
+          )}
+
+          {data.graduationYear && (
+            <div className="grid grid-cols-12 gap-1 py-0.5">
+              <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">GRADUATION YEAR:</span>
+              <span className="col-span-8 font-semibold text-stone-800 uppercase text-xs md:text-sm">{data.graduationYear}</span>
+            </div>
+          )}
+
+          {data.dateOfIssue && (
+            <div className="grid grid-cols-12 gap-1 py-0.5">
+              <span className="col-span-4 text-stone-500 font-bold uppercase tracking-wider text-[10px] md:text-xs">DATE OF ISSUE:</span>
+              <span className="col-span-8 font-semibold text-stone-800 uppercase text-xs md:text-sm">
+                {new Date(data.dateOfIssue).toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })}
+              </span>
+            </div>
+          )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-1 py-1">
-          <span className="md:col-span-4 text-stone-500 font-bold uppercase tracking-wider text-xs md:text-sm flex items-center">
-            PROGRAMME:
-          </span>
-          <span className="md:col-span-8 font-extrabold text-stone-900 uppercase text-xs md:text-sm">
-            {data.programme}
-          </span>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-1 py-1">
-          <span className="md:col-span-4 text-stone-500 font-bold uppercase tracking-wider text-xs md:text-sm flex items-center">
-            DURATION:
-          </span>
-          <span className="md:col-span-8 font-bold text-stone-800 uppercase text-xs md:text-sm">
-            {data.duration || 'THREE (3) MONTHS'}
-          </span>
-        </div>
+        {/* Passport size student photo */}
+        {data.studentPhotograph && (
+          <div className="flex-shrink-0 flex flex-col items-center justify-center p-1 bg-white border border-stone-300 shadow-sm relative rounded-sm mx-auto md:mx-0">
+            <img 
+              src={data.studentPhotograph} 
+              alt="Student Passport" 
+              className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-sm border border-stone-100"
+              referrerPolicy="no-referrer"
+              crossOrigin="anonymous"
+            />
+            {/* Ink Registrar Stamp stamp over photograph */}
+            <div className="absolute -bottom-2 -left-2 border border-purple-500/40 text-purple-500/40 bg-white/95 px-1 py-0.5 text-[8px] font-bold uppercase tracking-wider rounded transform -rotate-12 select-none">
+              DITEM APPROVED
+            </div>
+            <span className="text-[8px] text-stone-400 mt-1 uppercase font-semibold">PASSPORT PHOTO</span>
+          </div>
+        )}
       </div>
 
       {/* Transcript Courses Grades Table & Grading scale Sidebar */}
@@ -201,13 +249,30 @@ export default function PrintableTranscript({ data }: PrintableTranscriptProps) 
                   </tr>
                 ))
               )}
-              {/* Monospace Grade Point row exactly as shown in the image */}
-              <tr>
-                <td colSpan={4} className="border-r-0"></td>
-                <td className="text-center font-black text-sm bg-stone-50 border-l border-t-2" style={{ borderStyle: 'solid dashed' }}>
+              {/* Monospace Grade Point and detailed summary rows */}
+              <tr className="bg-stone-50/40">
+                <td colSpan={2} className="text-right font-bold text-stone-600 uppercase tracking-wide text-[10px]">Total Credits Registered:</td>
+                <td className="text-center font-extrabold text-stone-800">{data.totalCreditUnits || data.courses.reduce((sum, c) => sum + (parseInt(c.creditUnits) || 0), 0)}</td>
+                <td colSpan={2} className="text-right font-bold text-stone-600 uppercase tracking-wide text-[10px]">Semester GPA (SGPA):</td>
+                <td className="text-center font-black text-sm text-green-800 bg-green-50/40 border-l" style={{ borderStyle: 'solid dashed' }}>
                   {parseFloat(data.gpa || '3.00').toFixed(2)}
                 </td>
-                <td className="border-l-0"></td>
+              </tr>
+              <tr className="bg-stone-50/40">
+                <td colSpan={2} className="text-right font-bold text-stone-600 uppercase tracking-wide text-[10px]">Total Credits Passed:</td>
+                <td className="text-center font-extrabold text-green-700">{data.creditsPassed || data.courses.filter(c => c.grade !== 'F').reduce((sum, c) => sum + (parseInt(c.creditUnits) || 0), 0)}</td>
+                <td colSpan={2} className="text-right font-bold text-stone-600 uppercase tracking-wide text-[10px]">Cumulative GPA (CGPA):</td>
+                <td className="text-center font-black text-sm text-green-800 bg-green-50/40 border-l" style={{ borderStyle: 'solid dashed' }}>
+                  {parseFloat(data.cgpa || data.gpa || '3.00').toFixed(2)}
+                </td>
+              </tr>
+              <tr className="bg-stone-50/40">
+                <td colSpan={2} className="text-right font-bold text-stone-600 uppercase tracking-wide text-[10px]">Credits Failed/Outstanding:</td>
+                <td className="text-center font-extrabold text-red-600">{data.creditsFailed || data.courses.filter(c => c.grade === 'F').reduce((sum, c) => sum + (parseInt(c.creditUnits) || 0), 0)}</td>
+                <td colSpan={2} className="text-right font-bold text-stone-600 uppercase tracking-wide text-[10px]">Final Standing Classification:</td>
+                <td className="text-center font-black text-[10px] text-green-800 bg-green-50/40 border-l uppercase tracking-wider" style={{ borderStyle: 'solid dashed' }}>
+                  {finalClassification}
+                </td>
               </tr>
             </tbody>
           </table>

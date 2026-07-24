@@ -347,10 +347,10 @@ export default function CourseManager() {
                     value={level} onChange={(e) => setLevel(e.target.value)}
                     className="w-full px-3 py-2 text-xs font-semibold rounded-xl border border-slate-200 focus:outline-none bg-slate-50/50"
                   >
-                    <option value="ND1">ND1</option>
-                    <option value="ND2">ND2</option>
-                    <option value="HND1">HND1</option>
-                    <option value="HND2">HND2</option>
+                    <option value="Module 1">Module 1</option>
+                    <option value="Module 2">Module 2</option>
+                    <option value="Module 3">Module 3</option>
+                    <option value="Professional Level">Professional Level</option>
                   </select>
                 </div>
               </div>
